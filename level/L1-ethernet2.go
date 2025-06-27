@@ -17,7 +17,7 @@ type Ethernet2 struct {
 	ProtocolType [2]byte
 	// 数据包
 	DataPackage []byte
-	// CRC 校验和
+	// CRC校验和
 	CRCCheckSum [4]byte
 }
 
@@ -41,8 +41,10 @@ func getProtocolTypeBytes(protocolTypeStr string) [2]byte {
 		return [2]byte{0x08, 0x06}
 	case "IPv6":
 		return [2]byte{0x86, 0xDD}
-	case "VLAN":
-		return [2]byte{0x81, 0x00}
+	case "NDP":
+		return [2]byte{0x86, 0xDD}
+	case "ICMP":
+		return [2]byte{0x08, 0x00}
 	default:
 		return [2]byte{0x00, 0x00}
 	}
