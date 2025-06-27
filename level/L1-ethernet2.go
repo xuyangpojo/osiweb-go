@@ -33,7 +33,7 @@ const (
 // getProtocolTypeBytes 根据协议类型字符串返回对应的字节数组
 // @param protocolTypeStr 协议类型字符串
 // @return [2]byte 协议类型的字节表示
-func getProtocolTypeBytes(protocolTypeStr string) [2]byte {
+func getProtocolTypeBytes1(protocolTypeStr string) [2]byte {
 	switch protocolTypeStr {
 	case "IP":
 		return [2]byte{0x08, 0x00}
@@ -73,7 +73,7 @@ func NewEthernet2(dMacAddress, sMacAddress [6]byte, protocolTypeS string,
 		// panic("以太网帧数据包过大!")
 		data = data[:MaxDataSize]
 	}
-	protocolType := getProtocolTypeBytes(protocolTypeS)
+	protocolType := getProtocolTypeBytes1(protocolTypeS)
 	frame := &Ethernet2{
 		DMacAddress:  dMacAddress,
 		SMacAddress:  sMacAddress,
