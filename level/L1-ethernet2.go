@@ -2,12 +2,13 @@ package level
 
 import (
 	"encoding/binary"
-	"hash/crc32"
+	// "hash/crc32" // 不再需要
 )
 
 // Ethernet2 以太网帧
 // @author xuyang
 // @datetime 2025/6/27 8:00
+// [D_MAC][S_MAC][⬆][...DATA...][CheckSum]
 type Ethernet2 struct {
 	// 目的MAC地址
 	DMacAddress [6]byte
@@ -160,8 +161,39 @@ func (e *Ethernet2) calculateCRC() [4]byte {
 	copy(crcData[offset:], e.ProtocolType[:])
 	offset += 2
 	copy(crcData[offset:], e.DataPackage)
-	crc := crc32.ChecksumIEEE(crcData)
+	crc := calcCRC32IEEE(crcData) // 使用自定义的CRC32实现
 	var result [4]byte
 	binary.BigEndian.PutUint32(result[:], crc)
 	return result
+}
+
+// CRC循环冗余校验，将数据和一个固定的多项式做除法，校验余数
+var crc32Table [256]uint32
+
+func init() {
+	initCRC32Table()
+}
+
+// 查表法加快运算速度
+func initCRC32Table() {
+	const poly = 0xEDB88320
+	for i := 0; i < 256; i++ {
+		crc := uint32(i)
+		for j := 0; j < 8; j++ {
+			if crc&1 == 1 {
+				crc = (crc >> 1) ^ poly
+			} else {
+				crc >>= 1
+			}
+		}
+		crc32Table[i] = crc
+	}
+}
+
+func calcCRC32IEEE(data []byte) uint32 {
+	crc := uint32(0xFFFFFFFF)
+	for _, b := range data {
+		crc = crc32Table[byte(crc)^b] ^ (crc >> 8)
+	}
+	return ^crc
 }

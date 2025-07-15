@@ -23,19 +23,3 @@ func getProtocolTypeBytes21(protocolTypeStr string) [2]byte {
 		return [2]byte{0x00, 0x00}
 	}
 }
-func getProtocolTypeBytes22(protocolTypeStr string) [2]byte {
-	switch protocolTypeStr {
-	case "Ethernet2":
-		return [2]byte{0x00, 0x01}
-	default:
-		return [2]byte{0x00, 0x00}
-	}
-}
-func getProtocolTypeBytes23(protocolTypeStr string) [2]byte {
-	switch protocolTypeStr {
-	case "Ethernet2":
-		return [2]byte{0x00, 0x01}
-	default:
-		return [2]byte{0x00, 0x00}
-	}
-}

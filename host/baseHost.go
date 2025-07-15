@@ -8,7 +8,7 @@ import "fmt"
 type BaseHost struct {
 	// MAC地址
 	MACAddress [6]byte
-	// 公网IPv4地址
+	// IPv4地址
 	IPv4Address [4]byte
 	// 通信端口
 	NetChannel []chan []byte
@@ -24,4 +24,31 @@ func (host *BaseHost) print() {
 	fmt.Printf("IPv4地址: %02d,%02d,%02d,%02d\n",
 		host.IPv4Address[0], host.IPv4Address[1],
 		host.IPv4Address[2], host.IPv4Address[3])
+}
+
+// 全局主机列表
+var HostList []BaseHost
+
+// 全局广播地址 0.0.0.0
+var Forcast chan []byte
+
+// 创建主机
+func NewHost() *BaseHost {
+	newMacAddress := generateMacAddress()
+	newIPv4Address := generateIPv4Address()
+	host := &BaseHost{
+		MACAddress:  newMacAddress,
+		IPv4Address: newIPv4Address,
+		NetChannel:  append(make([]chan []byte, 0), Forcast),
+	}
+	HostList = append(HostList, *host)
+	return host
+}
+
+func generateMacAddress() [6]byte {
+	return [6]byte{0, 0, 0, 0, 0, 0}
+}
+
+func generateIPv4Address() [4]byte {
+	return [4]byte{0, 0, 0, 0}
 }
