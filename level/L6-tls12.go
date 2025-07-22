@@ -8,7 +8,7 @@ import (
 // TLS 1.2 报文结构体
 // TLS 1.2 Packet Structure
 // @author xuyang
-// @datetime 2025/6/27 14:10
+// @datetime 2025/7/22 15:00
 // [内容类型][版本][长度][负载数据]
 type TLS12Packet struct {
 	// 内容类型 Content Type (1 byte)
